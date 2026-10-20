@@ -2,17 +2,17 @@
 
 # 🖼️ Picture Backend DDD
 
-**基于 DDD (领域驱动设计) 架构的高性能图片管理系统后端**
+**基于 Spring Boot 与领域驱动设计（DDD）的图片管理系统后端**
 
-[![Java](https://img.shields.io/badge/Language-Java_100%25-blue.svg?style=for-the-badge&logo=java)](https://github.com/yuanyu-1016/picture-backend-ddd)
-[![Maven](https://img.shields.io/badge/Build-Maven-C71A22.svg?style=for-the-badge&logo=apache-maven)](https://github.com/yuanyu-1016/picture-backend-ddd)
+[![Java](https://img.shields.io/badge/Language-Java_8%2B-blue.svg?style=for-the-badge&logo=java)](https://github.com/yuanyu-1016/picture-backend-ddd)
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-2.7.6-6DB33F.svg?style=for-the-badge&logo=springboot)](https://spring.io/projects/spring-boot)
+[![Build](https://img.shields.io/badge/Build-Maven-C71A22.svg?style=for-the-badge&logo=apache-maven)](https://maven.apache.org/)
 [![Architecture](https://img.shields.io/badge/Architecture-DDD-success.svg?style=for-the-badge)](https://github.com/yuanyu-1016/picture-backend-ddd)
 [![Stars](https://img.shields.io/github/stars/yuanyu-1016/picture-backend-ddd?style=for-the-badge&color=yellow)](https://github.com/yuanyu-1016/picture-backend-ddd/stargazers)
 [![Forks](https://img.shields.io/github/forks/yuanyu-1016/picture-backend-ddd?style=for-the-badge&color=orange)](https://github.com/yuanyu-1016/picture-backend-ddd/network/members)
 [![Issues](https://img.shields.io/github/issues/yuanyu-1016/picture-backend-ddd?style=for-the-badge&color=red)](https://github.com/yuanyu-1016/picture-backend-ddd/issues)
-[![License](https://img.shields.io/github/license/yuanyu-1016/picture-backend-ddd?style=for-the-badge&color=blue)](https://github.com/yuanyu-1016/picture-backend-ddd/blob/master/LICENSE)
 
-[描述](#-描述) • [核心功能](#-核心功能) • [目录结构](#-目录结构) • [安装](#-安装) • [使用](#-使用) • [支持](#-支持) • [贡献](#-贡献) • [作者](#-作者)
+[描述](#-描述) · [核心功能](#-核心功能) · [技术栈](#-技术栈) · [目录结构](#-目录结构) · [快速开始](#-快速开始) · [接口分组](#-接口分组) · [开发建议](#-开发建议)
 
 </div>
 
@@ -20,135 +20,226 @@
 
 ## 📝 描述
 
-**Picture Backend DDD** 是一个现代化的企业级图片管理系统的后端项目。
+基于 Spring Boot 与领域驱动设计（DDD）的图片管理系统后端。项目采用前后端分离架构，提供用户、图片、空间和团队协作等业务能力，并集成对象存储、图片搜索、AI 扩图、Redis、WebSocket 与 Knife4j 接口文档。
 
-本项目深度实践了 **领域驱动设计 (Domain-Driven Design, DDD)** 架构思想，摒弃了传统 MVC 架构中业务逻辑臃肿、扩展性差的痛点。通过严格划分领域层、应用层、基础设施层与接口层，将核心的图片处理、存储与管理逻辑收敛于充血模型中。该架构不仅保证了系统的高内聚与低耦合，还大幅提升了代码的可读性与后期维护的敏捷性，非常适合应对复杂多变的图片资产管理业务场景。
-
-> **🔗 配套前端项目**
-> 本项目的前后端完全分离。如果您正在寻找该系统的用户交互界面与前端源码，请访问前端独立仓库：
-> 👉 **[yuanyu-1016/picture-frontend](https://github.com/yuanyu-1016/picture-frontend)**
+仓库地址：<https://github.com/yuanyu-1016/picture-backend-ddd>
 
 ---
 
 ## 🎯 核心功能
 
-本项目不仅是一次架构实践，更提供了一套完整的图片管理底层能力：
+- 用户注册、登录、退出登录，以及基于 Sa-Token 的会话认证。
+- 用户管理与管理员权限控制。
+- 图片上传、URL 上传、批量上传、分页查询、编辑、删除和审核。
+- 图片标签/分类管理、按图片搜索、按主色调搜索。
+- 图片压缩、缩略图生成和腾讯云 COS 对象存储。
+- 公共空间、私有空间和团队空间管理。
+- 空间成员管理，以及 viewer/editor/admin 角色权限控制。
+- 空间使用量、分类、标签、大小、成员和排行分析。
+- 基于 WebSocket 的图片协同编辑消息广播。
+- 基于 Redis 的 Session 存储和缓存能力。
+- 基于 ShardingSphere 自定义算法的图片表分片代码；当前启动类显式排除了 ShardingSphere 自动配置，详见“已知限制”。
+- 集成图片搜索接口和阿里云 DashScope 图片扩图任务接口。
 
-- **🖼️ 图片生命周期管理**：支持图片的批量上传、格式校验、检索、更新及软删除，并统一管理图片元数据（如尺寸、体积、标签等）。
-- **☁️ 云端对象存储集成**：通过策略模式与基础设施层防腐，无缝对接第三方对象存储服务（如 Aliyun OSS, Tencent COS, MinIO 等）。
-- **🔐 用户与权限隔离**：提供基础的用户认证机制，确保图片资产的安全性与数据隔离。
-- **⚡ 高性能与扩展能力**：支持接入 Redis 进行热点数据缓存，大幅优化高频图片检索的响应速度。
-- **🏗️ 纯粹的 DDD 落地**：业务逻辑与技术细节完全解耦，提供高内聚的充血领域模型，为二次开发提供绝佳的基础模板。
+---
+
+## 🧰 技术栈
+
+| 类别 | 技术 |
+| --- | --- |
+| 语言与运行时 | Java 8+ |
+| Web 框架 | Spring Boot 2.7.6、Spring MVC、Spring WebSocket |
+| 持久化 | MyBatis-Plus 3.5.9、MySQL |
+| 认证与会话 | Sa-Token 1.39.0、Spring Session、Redis |
+| 缓存 | Redis、Caffeine |
+| 对象存储 | 腾讯云 COS |
+| 分片 | Apache ShardingSphere 5.2.0 |
+| 接口文档 | Knife4j OpenAPI 2 |
+| 其他 | Lombok、Hutool、Disruptor、Jsoup |
 
 ---
 
 ## 📂 目录结构
 
-本项目严格遵循领域驱动设计 (DDD) 的四层架构规范，使得代码职责清晰、易于测试与重构：
-
 ```text
 picture-backend-ddd/
 ├── src/main/java/com/yuanyu/picture/
-│   ├── api/            # 接口层 (User Interface): 负责向外提供 RESTful API，处理 HTTP 请求与响应
-│   ├── application/    # 应用层 (Application): 负责业务用例的编排与调度，控制事务，不包含核心业务逻辑
-│   ├── domain/         # 领域层 (Domain): 核心层，包含聚合根、实体、值对象、领域服务及仓储(Repository)接口
-│   ├── infrastructure/ # 基础设施层 (Infrastructure): 负责数据库访问(持久化)、缓存、OSS对接等具体技术细节的实现
-│   └── PictureApplication.java # Spring Boot 启动类
+│   ├── interfaces/       # 接口层：Controller、DTO、VO、Assembler
+│   ├── application/      # 应用层：业务用例编排与事务边界
+│   ├── domain/           # 领域层：实体、值对象、仓储接口和领域服务
+│   ├── infrastructure/   # 基础设施层：数据库、COS、外部 API、配置和通用组件
+│   ├── shared/           # 跨领域能力：认证、分片、WebSocket 等
+│   └── PictureBackendApplication.java
 ├── src/main/resources/
-│   ├── application.yml # 全局配置文件 (数据库、OSS、Redis等环境配置)
-│   └── mapper/         # MyBatis / MyBatis-Plus Mapper XML 文件
-├── sql/                # 数据库初始化脚本与表结构设计
-└── pom.xml             # Maven 依赖与构建配置
+│   ├── application.yml   # 通用配置和默认运行参数
+│   ├── mapper/            # MyBatis Mapper XML
+│   ├── biz/               # 业务配置，例如空间成员权限配置
+│   └── static/            # 静态资源
+├── src/test/              # Spring Boot 和 Redis 测试
+├── sql/create_table.sql   # MySQL 初始化脚本
+├── pom.xml                # Maven 构建与依赖配置
+└── package.json           # OpenAPI 相关 Node.js 工具依赖
 ```
 
 ---
 
-## ⚙️ 安装
+## ⚙️ 环境要求
 
-在开始运行该项目之前，请确保您的开发环境已安装以下依赖：
-
-- **JDK**: 1.8 或更高版本 (推荐 JDK 11 / 17)
-- **Maven**: 3.6.x 或更高版本
-- **数据库**: MySQL 8.0+ 
-
-### 获取项目
-
-1. 克隆本仓库到本地环境：
-   ```bash
-   git clone [https://github.com/yuanyu-1016/picture-backend-ddd.git](https://github.com/yuanyu-1016/picture-backend-ddd.git)
-   ```
-
-2. 进入项目目录：
-   ```bash
-   cd picture-backend-ddd
-   ```
-
-3. 使用 Maven 导入并下载依赖：
-   ```bash
-   mvn clean install
-   ```
+- JDK 8 或更高版本
+- Maven 3.6 或更高版本
+- MySQL 8.x（项目使用 MySQL Connector/J）
+- Redis 6.x 或更高版本
+- 腾讯云 COS 存储桶及访问密钥
+- 如果使用 AI 扩图功能，需要阿里云 DashScope API Key
 
 ---
 
-## 🚀 使用
+## 🚀 快速开始
 
-1. **环境配置**：
-   在 `src/main/resources` 目录下，找到并修改 `application.yml`，配置您的 MySQL 数据库连接、OSS 密钥及其他必要参数。
+### 1. 获取代码
 
-2. **数据库初始化**：
-   执行 `sql` 目录下提供的建表脚本，初始化系统的基础数据结构。
+```bash
+git clone https://github.com/yuanyu-1016/picture-backend-ddd.git
+cd picture-backend-ddd
+```
 
-3. **启动服务**：
-   找到系统的主启动类 `PictureApplication`，执行 `main` 方法，或者通过以下命令启动：
-   ```bash
-   mvn spring-boot:run
-   ```
+### 2. 初始化数据库
 
-4. **API 调试**：
-   服务启动后，可以通过 Postman 或自带的 API 文档（如配置了 Swagger/Knife4j）直接调试图片上传、检索等核心接口。
+执行 [sql/create_table.sql](sql/create_table.sql)。脚本会创建 `picture` 数据库及 `user`、`picture`、`space`、`space_user` 表。
+
+执行前请确认数据库账号具有建库、建表和修改表结构的权限。脚本包含多次 `ALTER TABLE`，不适合对已经执行过部分迁移的生产数据库重复执行。
+
+### 3. 配置本地环境
+
+项目默认激活 `local` profile。请在 `src/main/resources/application-local.yml` 中配置本地参数；该文件已被 `.gitignore` 忽略，不应提交密钥。
+
+至少需要配置以下内容：
+
+```yaml
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/picture
+    username: your_mysql_user
+    password: your_mysql_password
+  redis:
+    host: 127.0.0.1
+    port: 6379
+
+cos:
+  client:
+    host: https://your-bucket.cos.your-region.myqcloud.com
+    secretId: your_tencent_secret_id
+    secretKey: your_tencent_secret_key
+    region: ap-guangzhou
+    bucket: your-bucket-appid
+
+aliYunAi:
+  apiKey: your_dashscope_api_key
+```
+
+不要把真实的数据库密码、腾讯云密钥或 API Key 写入 Git。仓库中的 `application.yml` 仍包含本地开发默认值，部署或共享代码前应使用本地配置覆盖，并及时轮换已经暴露的凭据。
+
+### 4. 构建与启动
+
+```bash
+mvn clean package
+mvn spring-boot:run
+```
+
+应用默认监听 `8123` 端口，并使用 `/api` 作为上下文路径。启动后可访问：
+
+```text
+健康检查： http://localhost:8123/api/health
+Knife4j：  http://localhost:8123/api/doc.html
+```
+
+也可以运行打包后的 JAR：
+
+```bash
+java -jar target/picture-backend-ddd-0.0.1-SNAPSHOT.jar
+```
 
 ---
 
-## 🛠️ 支持
+## 🔌 接口分组
 
-如果您在使用或部署过程中遇到任何问题，或者有关于 DDD 架构落地的探讨，欢迎通过以下方式获取支持：
+所有 HTTP 接口默认带有 `/api` 前缀，Controller 的主要路径如下：
 
-- 在本项目的 [Issues 页面](https://github.com/yuanyu-1016/picture-backend-ddd/issues) 提交问题报告。
-- 搜索已关闭的 Issue 寻找历史解决方案。
-- 提交功能请求 (Feature Request) 或 Bug 反馈。
+| 路径 | 说明 |
+| --- | --- |
+| `/api/user` | 注册、登录、用户信息和用户管理 |
+| `/api/picture` | 图片上传、查询、编辑、审核、搜索和扩图任务 |
+| `/api/space` | 空间管理和空间级别 |
+| `/api/spaceUser` | 团队空间成员和角色管理 |
+| `/api/space/analyze` | 空间使用量、分类、标签、大小、成员和排行分析 |
+| `/api/file` | 文件测试上传/下载接口，管理员权限可用 |
+| `/api/health` | 服务健康检查 |
 
----
+图片协同编辑 WebSocket 地址为：
 
-## 🤝 贡献
+```text
+ws://localhost:8123/api/ws/picture/edit
+```
 
-开源的魅力在于协作。如果您对改进这个基于 DDD 的图片后端系统有兴趣，我们非常欢迎您的代码提交！
-
-1. Fork 本仓库。
-2. 创建您的特性分支：`git checkout -b feature/AmazingFeature`
-3. 提交您的更改：`git commit -m 'Add some AmazingFeature'`
-4. 推送至该分支：`git push origin feature/AmazingFeature`
-5. 开启一个 Pull Request (PR)。
-
-**代码规范说明**：提交代码时，请确保符合项目整体的 DDD 目录规范，避免将业务逻辑泄露到基础设施层或接口层。
-
----
-
-## 👨‍💻 作者
-
-**何元玉 (@yuanyu-1016)**
-
-- **GitHub**: [https://github.com/yuanyu-1016](https://github.com/yuanyu-1016)
-- **专注领域**: AI 应用开发开发、Java 研发、复杂系统架构设计
+WebSocket 握手会经过登录用户校验，并按图片维度广播协同编辑消息。
 
 ---
 
-## 📄 认证
+## 🏗️ DDD 分层约定
 
-本项目采用 [MIT License](https://opensource.org/licenses/MIT) 进行开源认证。详细信息请参阅项目根目录下的 `LICENSE` 文件。
-
-> **免责声明**：使用本项目的源码时，请遵循相关开源协议，保留原作者的版权声明。
+- `interfaces` 只负责协议适配：接收 HTTP 参数、调用应用服务并组装响应。
+- `application` 负责组织业务用例、事务和跨领域协作。
+- `domain` 保持业务模型与仓储抽象，是核心业务规则的主要承载位置。
+- `infrastructure` 提供 MyBatis、腾讯云 COS、第三方 API、缓存和配置等技术实现。
+- `shared` 放置认证、权限、分片和 WebSocket 等跨多个业务模块使用的能力。
 
 ---
+
+## 🧪 测试
+
+执行全部测试：
+
+```bash
+mvn test
+```
+
+测试上下文会读取 Spring 配置，Redis 相关测试还需要可用的 Redis 服务；如果测试环境没有 MySQL、Redis、COS 或 DashScope 配置，请先准备对应的本地 profile，或按团队测试环境配置运行。
+
+---
+
+## ⚠️ 已知限制
+
+- `PictureBackendApplication` 使用 `@SpringBootApplication(exclude = { ShardingSphereAutoConfiguration.class })` 排除了 ShardingSphere 自动配置，因此配置文件中的分片规则不会自动启用。项目保留了自定义分片算法和动态分片管理代码，启用分片前需要先完善启动配置与验证流程。
+- `sql/create_table.sql` 是初始化脚本，不是版本化数据库迁移工具。生产环境请先备份并确认当前表结构，再执行增量变更。
+- `node_modules` 当前历史上已被提交到仓库，正常开发仍应以 `package-lock.json` 为准，通过 `npm install` 恢复依赖；后续可单独清理 Git 历史中的依赖目录。
+
+---
+
+## 🤝 开发建议
+
+```bash
+# Java 构建
+mvn clean package
+
+# 安装 Node.js 工具依赖（仅在需要 OpenAPI 工具时）
+npm install
+```
+
+提交代码前请确认：
+
+- 不提交 `application-local.yml`、密钥、日志和构建产物。
+- 新增业务逻辑放入合适的领域或应用层，避免在 Controller 中堆积业务规则。
+- 数据库结构变更同步更新 SQL 或迁移说明。
+- 对需要登录、管理员或空间角色权限的接口补充相应权限校验。
+
+---
+
+## 📄 许可证
+
+当前仓库未发现 `LICENSE` 文件，因此 README 不声明具体开源许可证。若计划对外发布，请先补充许可证文件并同步修改本节。
+
+---
+
 <p align="center">
-  <i>如果这个项目对您的开发或 DDD 学习有帮助，请给一个 ⭐️ 鼓励一下！</i>
+  <i>如果这个项目对你的开发或 DDD 学习有帮助，欢迎点一个 ⭐ 支持一下！</i>
 </p>
